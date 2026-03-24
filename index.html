@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SafePal Desktop — Download the Desktop App</title>
+  <meta name="description" content="Download SafePal Desktop — the most secure, AI-powered crypto wallet for your computer. Manage Bitcoin, Ethereum, and thousands of assets from your desktop." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0d0b1e;
+      color: #ffffff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* ─── CSS VARIABLES ────────────────────────────────────────────── */
+    :root {
+      --brand-purple: #5b4cf5;
+      --brand-purple-light: #7b6cf7;
+      --brand-purple-dark: #3d2fd4;
+      --brand-blue: #4a6cf7;
+      --bg-dark: #0d0b1e;
+      --bg-card: #13112a;
+      --bg-card-hover: #1a1836;
+      --bg-nav: rgba(13, 11, 30, 0.92);
+      --border-subtle: rgba(91, 76, 245, 0.2);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255,255,255,0.7);
+      --text-muted: rgba(255,255,255,0.45);
+      --gradient-hero: linear-gradient(135deg, #0d0b1e 0%, #1a0d3d 40%, #0d1a3d 100%);
+      --gradient-btn: linear-gradient(135deg, #5b4cf5 0%, #7b6cf7 100%);
+      --gradient-btn-hover: linear-gradient(135deg, #4a3de0 0%, #6a5ce6 100%);
+      --glow-purple: 0 0 40px rgba(91, 76, 245, 0.35);
+      --glow-btn: 0 8px 32px rgba(91, 76, 245, 0.45);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── SCROLL REVEAL ────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─── BACKGROUND DECORATIONS ───────────────────────────────────── */
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bg-glow-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(91,76,245,0.25) 0%, transparent 70%);
+      top: -200px; left: -100px;
+    }
+    .bg-glow-2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(74,108,247,0.2) 0%, transparent 70%);
+      top: 100px; right: -150px;
+    }
+    .bg-glow-3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(91,76,245,0.15) 0%, transparent 70%);
+      bottom: -100px; left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* ─── ANNOUNCEMENT BAR ─────────────────────────────────────────── */
+    .announcement-bar {
+      background: linear-gradient(90deg, var(--brand-purple-dark), var(--brand-purple), var(--brand-blue));
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 100;
+    }
+    .announcement-bar a {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      opacity: 0.9;
+    }
+    .announcement-bar a:hover { opacity: 1; }
+
+    /* ─── NAVIGATION ───────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      background: var(--bg-nav);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 40px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: var(--transition);
+      position: relative;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--brand-purple);
+      transition: width 0.3s ease;
+      border-radius: 2px;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-nav-download {
+      background: var(--gradient-btn);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--glow-btn);
+      white-space: nowrap;
+    }
+    .btn-nav-download:hover {
+      background: var(--gradient-btn-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 40px rgba(91,76,245,0.55);
+    }
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: rgba(13, 11, 30, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 24px 24px 32px;
+      z-index: 98;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu .btn-download-mobile {
+      background: var(--gradient-btn);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 8px;
+      box-shadow: var(--glow-btn);
+    }
+
+    /* ─── HERO SECTION ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: var(--gradient-hero);
+      padding: 100px 40px 80px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91,76,245,0.2) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(74,108,247,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    /* Animated particles */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(91,76,245,0.6);
+      animation: float-particle linear infinite;
+    }
+    @keyframes float-particle {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+    .hero-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-content { }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(91,76,245,0.15);
+      border: 1px solid rgba(91,76,245,0.35);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--brand-purple-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--brand-purple-light);
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brand-purple-light);
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, #7b6cf7, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gradient-btn);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 16px 32px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--glow-btn);
+      letter-spacing: 0.01em;
+    }
+    .btn-primary:hover {
+      background: var(--gradient-btn-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 48px rgba(91,76,245,0.6);
+    }
+    .btn-primary svg { flex-shrink: 0; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius-sm);
+      padding: 15px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: var(--brand-purple-light);
+      background: rgba(91,76,245,0.1);
+      transform: translateY(-2px);
+    }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-stat { }
+    .hero-stat-num {
+      font-size: 26px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    .hero-stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .hero-stat-divider {
+      width: 1px;
+      background: var(--border-subtle);
+      align-self: stretch;
+    }
+
+    /* ─── MOCKUP WRAPPER ───────────────────────────────────────────── */
+    .hero-mockup-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Desktop window mockup (CSS-drawn) */
+    .desktop-mockup {
+      width: 100%;
+      max-width: 560px;
+      background: #1a1836;
+      border-radius: 16px;
+      border: 1px solid rgba(91,76,245,0.3);
+      box-shadow:
+        0 0 0 1px rgba(91,76,245,0.15),
+        0 40px 80px rgba(0,0,0,0.6),
+        0 0 60px rgba(91,76,245,0.2);
+      overflow: hidden;
+      position: relative;
+      animation: float-mockup 6s ease-in-out infinite;
+    }
+    @keyframes float-mockup {
+      0%, 100% { transform: translateY(0px) rotate(-1deg); }
+      50% { transform: translateY(-16px) rotate(0deg); }
+    }
+    .mockup-titlebar {
+      background: #0f0d24;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(91,76,245,0.15);
+    }
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .mockup-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .mockup-dot.red { background: #ff5f57; }
+    .mockup-dot.yellow { background: #febc2e; }
+    .mockup-dot.green { background: #28c840; }
+    .mockup-titlebar-text {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .mockup-body {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      min-height: 340px;
+    }
+    .mockup-sidebar {
+      background: #110f26;
+      padding: 20px 0;
+      border-right: 1px solid rgba(91,76,245,0.1);
+    }
+    .mockup-sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px 20px;
+      border-bottom: 1px solid rgba(91,76,245,0.1);
+      margin-bottom: 16px;
+    }
+    .mockup-sidebar-logo-icon {
+      width: 24px; height: 24px;
+    }
+    .mockup-sidebar-logo-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .mockup-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 6px;
+      margin: 0 8px 2px;
+      transition: var(--transition);
+    }
+    .mockup-nav-item.active {
+      background: rgba(91,76,245,0.2);
+      color: var(--brand-purple-light);
+    }
+    .mockup-nav-item svg { flex-shrink: 0; }
+    .mockup-main {
+      padding: 20px;
+      background: #13112a;
+    }
+    .mockup-balance-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .mockup-balance {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+    .mockup-balance-change {
+      font-size: 11px;
+      color: #4ade80;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .mockup-actions-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .mockup-action-btn {
+      flex: 1;
+      background: rgba(91,76,245,0.15);
+      border: 1px solid rgba(91,76,245,0.25);
+      border-radius: 8px;
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 10px;
+      color: var(--brand-purple-light);
+      font-weight: 600;
+    }
+    .mockup-assets-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .mockup-asset-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mockup-asset-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+    .mockup-asset-name {
+      flex: 1;
+    }
+    .mockup-asset-name-main { font-size: 11px; font-weight: 600; color: #fff; }
+    .mockup-asset-name-sub { font-size: 9px; color: var(--text-muted); }
+    .mockup-asset-value { text-align: right; }
+    .mockup-asset-val-main { font-size: 11px; font-weight: 600; color: #fff; }
+    .mockup-asset-val-change { font-size: 9px; font-weight: 600; }
+    .mockup-asset-val-change.up { color: #4ade80; }
+    .mockup-asset-val-change.down { color: #f87171; }
+    /* AI chat overlay */
+    .mockup-ai-overlay {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, #1e1b40, #2a2460);
+      border: 1px solid rgba(91,76,245,0.4);
+      border-radius: 12px;
+      padding: 12px 14px;
+      width: 160px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .mockup-ai-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .mockup-ai-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--brand-purple-light);
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+    .mockup-ai-title { font-size: 10px; font-weight: 700; color: var(--brand-purple-light); }
+    .mockup-ai-msg { font-size: 9px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* ─── FLOATING BADGES ──────────────────────────────────────────── */
+    .badge-float {
+      position: absolute;
+      background: rgba(19, 17, 42, 0.92);
+      border: 1px solid rgba(91,76,245,0.4);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(91,76,245,0.1);
+      white-space: nowrap;
+      z-index: 10;
+    }
+    .badge-float-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .badge-float-text-main { font-size: 11px; font-weight: 700; color: #fff; }
+    .badge-float-text-sub { font-size: 10px; color: var(--text-muted); }
+    .badge-1 {
+      top: -20px; left: -30px;
+      animation: badge-float-1 5s ease-in-out infinite;
+    }
+    .badge-2 {
+      top: 30px; right: -40px;
+      animation: badge-float-2 6s ease-in-out infinite;
+    }
+    .badge-3 {
+      bottom: 20px; left: -40px;
+      animation: badge-float-3 7s ease-in-out infinite;
+    }
+    @keyframes badge-float-1 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes badge-float-2 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(8px); }
+    }
+    @keyframes badge-float-3 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* ─── TRUST BAR ────────────────────────────────────────────────── */
+    .trust-bar {
+      background: #0f0d24;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 28px 40px;
+    }
+    .trust-bar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .trust-item svg { color: var(--brand-purple-light); flex-shrink: 0; }
+    .trust-divider {
+      width: 1px; height: 24px;
+      background: var(--border-subtle);
+    }
+
+    /* ─── SECTION COMMONS ──────────────────────────────────────────── */
+    section { position: relative; overflow: hidden; }
+    .section-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .section-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brand-purple-light);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--brand-purple);
+      border-radius: 2px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .section-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+    .section-header { margin-bottom: 64px; }
+    .section-header.centered {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .section-header.centered .section-eyebrow::before { display: none; }
+
+    /* ─── FEATURES SECTION ─────────────────────────────────────────── */
+    .features-section {
+      background: var(--bg-dark);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: default;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(91,76,245,0.08) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: rgba(91,76,245,0.5);
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.3), var(--glow-purple);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card-icon-wrap {
+      width: 64px; height: 64px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .feature-card-icon-wrap.purple {
+      background: linear-gradient(135deg, rgba(91,76,245,0.25), rgba(91,76,245,0.1));
+      border: 1px solid rgba(91,76,245,0.3);
+    }
+    .feature-card-icon-wrap.blue {
+      background: linear-gradient(135deg, rgba(74,108,247,0.25), rgba(74,108,247,0.1));
+      border: 1px solid rgba(74,108,247,0.3);
+    }
+    .feature-card-icon-wrap.teal {
+      background: linear-gradient(135deg, rgba(20,184,166,0.25), rgba(20,184,166,0.1));
+      border: 1px solid rgba(20,184,166,0.3);
+    }
+    .feature-card-tag {
+      display: inline-block;
+      background: rgba(91,76,245,0.15);
+      border: 1px solid rgba(91,76,245,0.3);
+      color: var(--brand-purple-light);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .feature-card-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .feature-card-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .feature-card-list {
+      list-style: none;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .feature-card-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .feature-card-list li::before {
+      content: '';
+      display: block;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: rgba(91,76,245,0.2);
+      border: 1px solid rgba(91,76,245,0.4);
+      flex-shrink: 0;
+      margin-top: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l3.5 3.5L13 5' stroke='%237b6cf7' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: 12px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .feature-card-number {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 72px;
+      font-weight: 900;
+      color: rgba(91,76,245,0.06);
+      line-height: 1;
+      pointer-events: none;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ─── HOW IT WORKS ─────────────────────────────────────────────── */
+    .how-section {
+      background: #0f0d24;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: calc(16.67% + 16px);
+      right: calc(16.67% + 16px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--brand-purple), var(--brand-blue));
+      opacity: 0.3;
+    }
+    .step-item {
+      text-align: center;
+      padding: 32px 24px;
+      position: relative;
+    }
+    .step-number-wrap {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-purple), var(--brand-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 8px 24px rgba(91,76,245,0.4);
+    }
+    .step-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ─── SPECS / SYSTEM REQUIREMENTS ─────────────────────────────── */
+    .specs-section {
+      background: var(--bg-dark);
+    }
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .specs-content { }
+    .specs-table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .specs-table-header {
+      background: rgba(91,76,245,0.1);
+      padding: 16px 24px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand-purple-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .specs-row {
+      display: flex;
+      align-items: center;
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .specs-row:last-child { border-bottom: none; }
+    .specs-row-label {
+      width: 140px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .specs-row-value {
+      font-size: 13px;
+      color: #fff;
+      font-weight: 500;
+    }
+    .specs-row-value .tag {
+      display: inline-block;
+      background: rgba(91,76,245,0.15);
+      border: 1px solid rgba(91,76,245,0.25);
+      color: var(--brand-purple-light);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+    .specs-download-box {
+      background: linear-gradient(135deg, rgba(91,76,245,0.15), rgba(74,108,247,0.08));
+      border: 1px solid rgba(91,76,245,0.3);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      text-align: center;
+    }
+    .specs-download-icon {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, var(--brand-purple), var(--brand-blue));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      box-shadow: 0 16px 40px rgba(91,76,245,0.4);
+    }
+    .specs-download-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+    .specs-download-version {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .specs-download-size {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .specs-download-size span {
+      color: var(--brand-purple-light);
+      font-weight: 600;
+    }
+
+    /* ─── TESTIMONIALS ─────────────────────────────────────────────── */
+    .testimonials-section {
+      background: #0f0d24;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+    .testimonial-card:hover {
+      border-color: rgba(91,76,245,0.4);
+      transform: translateY(-4px);
+    }
+    .testimonial-stars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .star { color: #fbbf24; font-size: 16px; }
+    .testimonial-text {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .testimonial-author-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .testimonial-author-role {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ─── FAQ SECTION ──────────────────────────────────────────────── */
+    .faq-section {
+      background: var(--bg-dark);
+    }
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .faq-item:hover { border-color: rgba(91,76,245,0.4); }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .faq-question-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.4;
+    }
+    .faq-chevron {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(91,76,245,0.15);
+      border: 1px solid rgba(91,76,245,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      color: var(--brand-purple-light);
+    }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; }
+    .faq-answer-inner {
+      padding: 0 24px 22px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ─── CTA SECTION ──────────────────────────────────────────────── */
+    .cta-section {
+      background: var(--bg-dark);
+    }
+    .cta-box {
+      background: linear-gradient(135deg, #1a0d3d 0%, #0d1a3d 50%, #1a0d3d 100%);
+      border: 1px solid rgba(91,76,245,0.3);
+      border-radius: var(--radius-xl);
+      padding: 80px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(91,76,245,0.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cta-title {
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-note a { color: var(--brand-purple-light); }
+
+    /* ─── FOOTER ───────────────────────────────────────────────────── */
+    footer {
+      background: #0a0818;
+      border-top: 1px solid var(--border-subtle);
+      padding: 64px 40px 32px;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 40px;
+    }
+    .footer-brand { }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer-tagline {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+    .footer-social-link {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(91,76,245,0.1);
+      border: 1px solid rgba(91,76,245,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .footer-social-link:hover {
+      background: rgba(91,76,245,0.2);
+      border-color: rgba(91,76,245,0.4);
+      color: #fff;
+    }
+    .footer-links-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+    .footer-links-col-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .footer-links-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-links-col ul a {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .footer-links-col ul a:hover { color: #fff; }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .footer-legal {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-legal a {
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+    .footer-legal a:hover { color: #fff; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-container { grid-template-columns: 1fr; gap: 60px; }
+      .hero { padding: 80px 32px 60px; min-height: auto; }
+      .hero-mockup-wrap { max-width: 500px; margin: 0 auto; }
+      .badge-1 { top: -10px; left: 0; }
+      .badge-2 { top: 20px; right: 0; }
+      .badge-3 { bottom: 10px; left: 0; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .specs-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 40px; }
+      .footer-links-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero { padding: 60px 20px 40px; }
+      .hero-title { font-size: 36px; }
+      .hero-stats { gap: 24px; }
+      .section-inner { padding: 64px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 48px 24px; }
+      .trust-bar { padding: 20px; }
+      .trust-bar-inner { gap: 24px; }
+      .trust-divider { display: none; }
+      footer { padding: 48px 20px 24px; }
+      .footer-links-grid { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .footer-legal { flex-wrap: wrap; justify-content: center; }
+      .badge-1, .badge-2, .badge-3 { display: none; }
+      .desktop-mockup { max-width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+      .hero-stats { flex-direction: column; gap: 16px; }
+      .hero-stat-divider { display: none; }
+      .cta-actions { flex-direction: column; align-items: stretch; }
+      .footer-links-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    🎉 SafePal Desktop is now available — <a href="#download">Download the app</a> and experience crypto management like never before.
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">
+        <!-- SafePal S logo SVG -->
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="8" fill="#5b4cf5"/>
+          <path d="M10 10L18 10L26 18L18 26L10 26L10 18L18 18L18 10" fill="none" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M10 18L18 18L26 18" fill="none" stroke="white" stroke-width="2.5"/>
+          <path d="M8 12L16 4L28 16L20 24" fill="none" stroke="white" stroke-width="0" opacity="0"/>
+          <!-- Actual S-shield shape -->
+          <path d="M22 8H14L8 14V22L14 28H22L28 22V14L22 8Z" fill="none" stroke="white" stroke-width="0"/>
+          <!-- Clean S mark -->
+          <path d="M23.5 13.5C23.5 11.567 21.933 10 20 10H16C14.067 10 12.5 11.567 12.5 13.5C12.5 15.433 14.067 17 16 17H20C21.933 17 23.5 18.567 23.5 20.5C23.5 22.433 21.933 24 20 24H16C14.067 24 12.5 22.433 12.5 20.5" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      SafePal
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#requirements">Requirements</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://safepal.com" target="_blank">safepal.com</a></li>
+    </ul>
+    <div class="nav-cta">
+      <button class="btn-nav-download" onclick="window.location.href='https://store-na-phx-5.gofile.io/download/direct/54373d3a-4df6-49dc-8798-cfdec1be285a/SafePalDesktop-Installer.msi'">
+        ↓ Download Now
+      </button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" onclick="closeMobile()">Features</a>
+    <a href="#how-it-works" onclick="closeMobile()">How It Works</a>
+    <a href="#requirements" onclick="closeMobile()">Requirements</a>
+    <a href="#faq" onclick="closeMobile()">FAQ</a>
+    <a href="https://safepal.com" target="_blank">safepal.com ↗</a>
+    <button class="btn-download-mobile" onclick="window.location.href='https://store-na-phx-5.gofile.io/download/direct/54373d3a-4df6-49dc-8798-cfdec1be285a/SafePalDesktop-Installer.msi'">
+      ↓ Download SafePal Desktop
+    </button>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="hero-particles" id="particles"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="hero-container">
+      <!-- Left: Content -->
+      <div class="hero-content">
+        <div class="hero-badge reveal">
+          <span class="hero-badge-dot"></span>
+          Now Available for Windows
+        </div>
+        <p class="hero-eyebrow reveal reveal-delay-1">SafePal Desktop App</p>
+        <h1 class="hero-title reveal reveal-delay-2">
+          Your Crypto.<br/>
+          <span class="highlight">Fully in Control.</span><br/>
+          On Desktop.
+        </h1>
+        <p class="hero-subtitle reveal reveal-delay-3">
+          The most secure, AI-powered desktop crypto wallet. Manage Bitcoin, Ethereum, and 10,000+ assets with unmatched hardware compatibility, advanced scam detection, and built-in AI support — all from your desktop.
+        </p>
+        <div class="hero-actions reveal reveal-delay-4">
+          <button class="btn-primary" onclick="window.location.href='https://store-na-phx-5.gofile.io/download/direct/54373d3a-4df6-49dc-8798-cfdec1be285a/SafePalDesktop-Installer.msi'">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download for Windows
+          </button>
+          <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+            Explore Features →
+          </button>
+        </div>
+        <div class="hero-stats reveal reveal-delay-5">
+          <div class="hero-stat">
+            <div class="hero-stat-num">10M+</div>
+            <div class="hero-stat-label">Active Users</div>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">10,000+</div>
+            <div class="hero-stat-label">Supported Tokens</div>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">100+</div>
+            <div class="hero-stat-label">Blockchains</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Desktop Mockup -->
+      <div class="hero-mockup-wrap reveal-right">
+        <!-- Floating badges -->
+        <div class="badge-float badge-1">
+          <div class="badge-float-icon" style="background:rgba(91,76,245,0.2);">🔒</div>
+          <div>
+            <div class="badge-float-text-main">Scam Detection</div>
+            <div class="badge-float-text-sub">AI-Powered Shield</div>
+          </div>
+        </div>
+        <div class="badge-float badge-2">
+          <div class="badge-float-icon" style="background:rgba(74,108,247,0.2);">🤖</div>
+          <div>
+            <div class="badge-float-text-main">AI Support</div>
+            <div class="badge-float-text-sub">24/7 Assistant</div>
+          </div>
+        </div>
+        <div class="badge-float badge-3">
+          <div class="badge-float-icon" style="background:rgba(20,184,166,0.2);">⚡</div>
+          <div>
+            <div class="badge-float-text-main">Hardware Ready</div>
+            <div class="badge-float-text-sub">All Devices</div>
+          </div>
+        </div>
+
+        <!-- Desktop Window Mockup -->
+        <div class="desktop-mockup">
+          <div class="mockup-titlebar">
+            <div class="mockup-dots">
+              <div class="mockup-dot red"></div>
+              <div class="mockup-dot yellow"></div>
+              <div class="mockup-dot green"></div>
+            </div>
+            <div class="mockup-titlebar-text">SafePal Desktop — Portfolio</div>
+          </div>
+          <div class="mockup-body">
+            <!-- Sidebar -->
+            <div class="mockup-sidebar">
+              <div class="mockup-sidebar-logo">
+                <svg class="mockup-sidebar-logo-icon" viewBox="0 0 24 24" fill="none">
+                  <rect width="24" height="24" rx="5" fill="#5b4cf5"/>
+                  <path d="M15.5 9C15.5 7.619 14.381 6.5 13 6.5H11C9.619 6.5 8.5 7.619 8.5 9C8.5 10.381 9.619 11.5 11 11.5H13C14.381 11.5 15.5 12.619 15.5 14C15.5 15.381 14.381 16.5 13 16.5H11C9.619 16.5 8.5 15.381 8.5 14" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+                <span class="mockup-sidebar-logo-text">SafePal</span>
+              </div>
+              <div class="mockup-nav-item active">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                Portfolio
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Assets
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                Swap
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                DeFi
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Security
+              </div>
+              <div class="mockup-nav-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                Account
+              </div>
+            </div>
+            <!-- Main content -->
+            <div class="mockup-main">
+              <div class="mockup-balance-label">Total Balance</div>
+              <div class="mockup-balance">$71,438.64</div>
+              <div class="mockup-balance-change">▲ +$1,284.22 (1.83%) Today</div>
+              <div class="mockup-actions-row">
+                <div class="mockup-action-btn">Send</div>
+                <div class="mockup-action-btn">Receive</div>
+                <div class="mockup-action-btn">Swap</div>
+                <div class="mockup-action-btn">Buy</div>
+              </div>
+              <div class="mockup-assets-title">My Assets</div>
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-icon" style="background:#f7931a;">₿</div>
+                <div class="mockup-asset-name">
+                  <div class="mockup-asset-name-main">Bitcoin</div>
+                  <div class="mockup-asset-name-sub">BTC</div>
+                </div>
+                <div class="mockup-asset-value">
+                  <div class="mockup-asset-val-main">$42,180</div>
+                  <div class="mockup-asset-val-change up">+2.4%</div>
+                </div>
+              </div>
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-icon" style="background:#627eea;">Ξ</div>
+                <div class="mockup-asset-name">
+                  <div class="mockup-asset-name-main">Ethereum</div>
+                  <div class="mockup-asset-name-sub">ETH</div>
+                </div>
+                <div class="mockup-asset-value">
+                  <div class="mockup-asset-val-main">$18,240</div>
+                  <div class="mockup-asset-val-change up">+1.2%</div>
+                </div>
+              </div>
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-icon" style="background:#5b4cf5;">S</div>
+                <div class="mockup-asset-name">
+                  <div class="mockup-asset-name-main">SafePal</div>
+                  <div class="mockup-asset-name-sub">SFP</div>
+                </div>
+                <div class="mockup-asset-value">
+                  <div class="mockup-asset-val-main">$5,555</div>
+                  <div class="mockup-asset-val-change up">+5.7%</div>
+                </div>
+              </div>
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-icon" style="background:#f0b90b;">B</div>
+                <div class="mockup-asset-name">
+                  <div class="mockup-asset-name-main">BNB</div>
+                  <div class="mockup-asset-name-sub">BEP20</div>
+                </div>
+                <div class="mockup-asset-value">
+                  <div class="mockup-asset-val-main">$5,463</div>
+                  <div class="mockup-asset-val-change down">-0.8%</div>
+                </div>
+              </div>
+              <!-- AI overlay -->
+              <div class="mockup-ai-overlay">
+                <div class="mockup-ai-header">
+                  <div class="mockup-ai-dot"></div>
+                  <span class="mockup-ai-title">AI Assistant</span>
+                </div>
+                <div class="mockup-ai-msg">Your portfolio is up 1.83% today. BTC looks bullish. No suspicious activity detected.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Non-Custodial Wallet
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Backed by Binance Labs
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        100+ Blockchains
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        10M+ Users Worldwide
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        4.8/5 App Store Rating
+      </div>
+    </div>
+  </div>
+
+  <!-- EXCLUSIVE FEATURES SECTION -->
+  <section class="features-section" id="features">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">Exclusive Desktop Features</div>
+        <h2 class="section-title">Built Different.<br/>Built Better.</h2>
+        <p class="section-subtitle">SafePal Desktop brings three groundbreaking features that redefine what a crypto wallet can do on your computer.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1: Hardware Compatibility -->
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-card-number">01</div>
+          <div class="feature-card-icon-wrap teal">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <span class="feature-card-tag">New</span>
+          <h3 class="feature-card-title">Improved Hardware Compatibility</h3>
+          <p class="feature-card-desc">Seamlessly connect and manage all your hardware wallets — SafePal S1, Ledger, Trezor, and more — with plug-and-play desktop integration that just works.</p>
+          <ul class="feature-card-list">
+            <li>Universal hardware wallet support across all major brands</li>
+            <li>Auto-detect and configure connected devices instantly</li>
+            <li>Multi-device management from a single dashboard</li>
+            <li>Firmware update support built directly into the app</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2: Scam Detection -->
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-card-number">02</div>
+          <div class="feature-card-icon-wrap purple">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7b6cf7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <span class="feature-card-tag">AI-Powered</span>
+          <h3 class="feature-card-title">Advanced Scam Detection</h3>
+          <p class="feature-card-desc">Our AI-driven threat engine monitors every transaction and interaction in real-time, flagging suspicious contracts, phishing attempts, and malicious DApps before they can harm you.</p>
+          <ul class="feature-card-list">
+            <li>Real-time transaction risk scoring and alerts</li>
+            <li>Smart contract vulnerability analysis</li>
+            <li>Phishing URL and DApp blacklist database</li>
+            <li>Behavioral anomaly detection across your wallet activity</li>
+          </ul>
+        </div>
+
+        <!-- Feature 3: AI Support -->
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-card-number">03</div>
+          <div class="feature-card-icon-wrap blue">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4a6cf7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              <circle cx="9" cy="10" r="1" fill="#4a6cf7"/>
+              <circle cx="12" cy="10" r="1" fill="#4a6cf7"/>
+              <circle cx="15" cy="10" r="1" fill="#4a6cf7"/>
+            </svg>
+          </div>
+          <span class="feature-card-tag">Exclusive</span>
+          <h3 class="feature-card-title">In-Built AI Support</h3>
+          <p class="feature-card-desc">Your personal crypto advisor, available 24/7 inside the app. Ask anything — from portfolio analysis to DeFi strategy — and get instant, intelligent answers powered by advanced AI.</p>
+          <ul class="feature-card-list">
+            <li>Natural language portfolio insights and analysis</li>
+            <li>Step-by-step guidance for complex DeFi operations</li>
+            <li>Market sentiment and trend summaries on demand</li>
+            <li>Personalized security recommendations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how-it-works">
+    <div class="section-inner">
+      <div class="section-header centered reveal">
+        <div class="section-eyebrow">Get Started in Minutes</div>
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Download, install, and take full control of your crypto portfolio in three simple steps.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-item reveal reveal-delay-1">
+          <div class="step-number-wrap">1</div>
+          <h3 class="step-title">Download & Install</h3>
+          <p class="step-desc">Click the download button to get the SafePal Desktop installer for Windows. Run the installer and follow the simple setup wizard — takes less than 2 minutes.</p>
+        </div>
+        <div class="step-item reveal reveal-delay-2">
+          <div class="step-number-wrap">2</div>
+          <h3 class="step-title">Import or Create Wallet</h3>
+          <p class="step-desc">Create a brand-new wallet with a secure seed phrase, or import your existing SafePal wallet. Connect your hardware wallet for the highest level of security.</p>
+        </div>
+        <div class="step-item reveal reveal-delay-3">
+          <div class="step-number-wrap">3</div>
+          <h3 class="step-title">Manage Your Crypto</h3>
+          <p class="step-desc">View your full portfolio, send and receive assets, swap tokens, explore DeFi, and let the AI assistant guide you — all from one powerful desktop dashboard.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEM REQUIREMENTS & DOWNLOAD -->
+  <section class="specs-section" id="requirements">
+    <div class="section-inner">
+      <div class="specs-grid">
+        <div class="specs-content">
+          <div class="section-eyebrow reveal">System Requirements</div>
+          <h2 class="section-title reveal">Ready to Run<br/>on Your Machine</h2>
+          <p class="section-subtitle reveal" style="margin-bottom:40px;">SafePal Desktop is optimized for modern Windows systems and designed to run smoothly even on modest hardware.</p>
+
+          <div class="specs-table-wrap reveal">
+            <div class="specs-table-header">Windows Requirements</div>
+            <div class="specs-row">
+              <div class="specs-row-label">OS Version</div>
+              <div class="specs-row-value"><span class="tag">Win 10</span><span class="tag">Win 11</span></div>
+            </div>
+            <div class="specs-row">
+              <div class="specs-row-label">Architecture</div>
+              <div class="specs-row-value">64-bit (x86_64)</div>
+            </div>
+            <div class="specs-row">
+              <div class="specs-row-label">RAM</div>
+              <div class="specs-row-value">4 GB minimum (8 GB recommended)</div>
+            </div>
+            <div class="specs-row">
+              <div class="specs-row-label">Storage</div>
+              <div class="specs-row-value">500 MB free disk space</div>
+            </div>
+            <div class="specs-row">
+              <div class="specs-row-label">Internet</div>
+              <div class="specs-row-value">Required for sync & AI features</div>
+            </div>
+            <div class="specs-row">
+              <div class="specs-row-label">USB</div>
+              <div class="specs-row-value">USB 2.0+ for hardware wallet</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="specs-download-box reveal-right" id="download">
+          <div class="specs-download-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="24" height="24" rx="0" fill="none"/>
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </div>
+          <div class="specs-download-title">SafePal Desktop</div>
+          <div class="specs-download-version">Version 1.0.0 — Stable Release</div>
+          <div class="specs-download-size">File size: <span>~85 MB</span> &nbsp;·&nbsp; Format: <span>.MSI Installer</span></div>
+          <button class="btn-primary" style="width:100%;justify-content:center;font-size:16px;padding:18px 32px;" onclick="window.location.href='https://store-na-phx-5.gofile.io/download/direct/54373d3a-4df6-49dc-8798-cfdec1be285a/SafePalDesktop-Installer.msi'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download for Windows
+          </button>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:16px;line-height:1.6;">
+            Free to download. Non-custodial — your keys, your crypto.<br/>
+            <a href="https://safepal.com" target="_blank" style="color:var(--brand-purple-light);">Learn more at safepal.com ↗</a>
+          </p>
+          <!-- Security badges row -->
+          <div style="display:flex;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Virus Scanned
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Code Signed
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Open Source
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div class="section-inner">
+      <div class="section-header centered reveal">
+        <div class="section-eyebrow">What Users Say</div>
+        <h2 class="section-title">Trusted by Millions</h2>
+        <p class="section-subtitle">Join over 10 million SafePal users who trust us to protect and grow their crypto assets every day.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">"The desktop app is a game-changer. The AI support caught a suspicious contract interaction that would have cost me thousands. The hardware compatibility is flawless with my SafePal S1."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:linear-gradient(135deg,#5b4cf5,#4a6cf7);">A</div>
+            <div>
+              <div class="testimonial-author-name">Alex M.</div>
+              <div class="testimonial-author-role">DeFi Investor · 3 years with SafePal</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">"Finally a desktop wallet that doesn't feel like it was built in 2015. The scam detection is incredible — it blocked a phishing DApp I nearly signed. The UI is gorgeous and fast."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:linear-gradient(135deg,#14b8a6,#0891b2);">S</div>
+            <div>
+              <div class="testimonial-author-name">Sarah K.</div>
+              <div class="testimonial-author-role">Crypto Trader · Portfolio Manager</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="testimonial-stars">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <p class="testimonial-text">"The built-in AI assistant is like having a crypto expert on call. I asked it to explain my gas fees and it gave me a full breakdown with optimization tips. Absolutely brilliant product."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">R</div>
+            <div>
+              <div class="testimonial-author-name">Ryan T.</div>
+              <div class="testimonial-author-role">NFT Collector · Web3 Developer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section" id="faq">
+    <div class="section-inner">
+      <div class="section-header centered reveal">
+        <div class="section-eyebrow">Frequently Asked Questions</div>
+        <h2 class="section-title">Got Questions?</h2>
+        <p class="section-subtitle">Everything you need to know about SafePal Desktop before you download.</p>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item reveal reveal-delay-1">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Is SafePal Desktop free to download and use?</span>
+            <span class="faq-chevron">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Yes, SafePal Desktop is completely free to download and use. There are no subscription fees or hidden charges. Standard network transaction fees (gas fees) apply when sending crypto, as with any wallet.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-2">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Is my private key stored on SafePal's servers?</span>
+            <span class="faq-chevron">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Never. SafePal Desktop is a fully non-custodial wallet. Your private keys and seed phrase are generated and stored exclusively on your device. SafePal has zero access to your funds or keys at any time.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-3">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Can I import my existing SafePal mobile wallet?</span>
+            <span class="faq-chevron">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Absolutely. You can import any existing SafePal wallet using your 12 or 24-word seed phrase. Your full portfolio, transaction history, and settings will be available immediately after import.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-4">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Which hardware wallets are supported?</span>
+            <span class="faq-chevron">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">SafePal Desktop supports SafePal S1 Pro, SafePal S1, Ledger Nano S/X/S Plus, Trezor Model T/One, and other major hardware wallets. Simply connect via USB and the app will auto-detect your device.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-1">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">How does the AI scam detection work?</span>
+            <span class="faq-chevron">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">Our AI engine analyzes transaction parameters, smart contract code, and destination addresses against a continuously updated threat database. It flags suspicious activity before you confirm any transaction, giving you a risk score and detailed explanation.</div>
+          </div>
+        </div>
+
+        <div class="faq-item reveal reveal-delay-2">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span class="faq-question-text">Will a macOS version be available?</span>
+            <span class="faq-chevron">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">A macOS version is currently in development and will be released in a future update. Sign up for notifications at safepal.com to be the first to know when it launches.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="section-inner">
+      <div class="cta-box reveal">
+        <div class="bg-glow bg-glow-3"></div>
+        <h2 class="cta-title">Take Control of<br/>Your Crypto Today.</h2>
+        <p class="cta-subtitle">Download SafePal Desktop and experience the most secure, intelligent, and powerful crypto wallet ever built for your computer.</p>
+        <div class="cta-actions">
+          <button class="btn-primary" style="font-size:16px;padding:18px 40px;" onclick="window.location.href='https://store-na-phx-5.gofile.io/download/direct/54373d3a-4df6-49dc-8798-cfdec1be285a/SafePalDesktop-Installer.msi'">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download SafePal Desktop
+          </button>
+          <button class="btn-secondary" onclick="window.open('https://safepal.com','_blank')">
+            Visit safepal.com ↗
+          </button>
+        </div>
+        <p class="cta-note">Free download · Non-custodial · Windows 10/11 · <a href="https://safepal.com" target="_blank">safepal.com</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none">
+              <rect width="36" height="36" rx="8" fill="#5b4cf5"/>
+              <path d="M23.5 13.5C23.5 11.567 21.933 10 20 10H16C14.067 10 12.5 11.567 12.5 13.5C12.5 15.433 14.067 17 16 17H20C21.933 17 23.5 18.567 23.5 20.5C23.5 22.433 21.933 24 20 24H16C14.067 24 12.5 22.433 12.5 20.5" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            </svg>
+            SafePal
+          </div>
+          <p class="footer-tagline">The most trusted crypto wallet for managing, growing, and securing your digital assets — now available on desktop.</p>
+          <div class="footer-social">
+            <a href="https://twitter.com/iSafePal" target="_blank" class="footer-social-link" aria-label="Twitter">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://t.me/SafePal_official" target="_blank" class="footer-social-link" aria-label="Telegram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.833.932z"/></svg>
+            </a>
+            <a href="https://discord.gg/safepal" target="_blank" class="footer-social-link" aria-label="Discord">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.033.05a19.91 19.91 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+            </a>
+            <a href="https://github.com/safepal-official" target="_blank" class="footer-social-link" aria-label="GitHub">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links-grid">
+          <div class="footer-links-col">
+            <div class="footer-links-col-title">Products</div>
+            <ul>
+              <li><a href="https://safepal.com/download" target="_blank">Mobile App</a></li>
+              <li><a href="#">Desktop App</a></li>
+              <li><a href="https://safepal.com/extension" target="_blank">Browser Extension</a></li>
+              <li><a href="https://safepal.com/hardware-wallet" target="_blank">Hardware Wallet</a></li>
+              <li><a href="https://safepal.com/bank" target="_blank">SafePal Bank</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-col">
+            <div class="footer-links-col-title">Features</div>
+            <ul>
+              <li><a href="#">Hardware Compatibility</a></li>
+              <li><a href="#">Scam Detection</a></li>
+              <li><a href="#">AI Support</a></li>
+              <li><a href="https://safepal.com/swap" target="_blank">Token Swap</a></li>
+              <li><a href="https://safepal.com/earn" target="_blank">Earn & Stake</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-col">
+            <div class="footer-links-col-title">Learn</div>
+            <ul>
+              <li><a href="https://safepal.com/blog" target="_blank">Blog</a></li>
+              <li><a href="https://docs.safepal.io" target="_blank">Documentation</a></li>
+              <li><a href="https://safepal.com/secure" target="_blank">Security</a></li>
+              <li><a href="https://safepal.com/grant/solana" target="_blank">Builder Grants</a></li>
+              <li><a href="https://safepal.com/sfp" target="_blank">SFP Token</a></li>
+            </ul>
+          </div>
+          <div class="footer-links-col">
+            <div class="footer-links-col-title">Support</div>
+            <ul>
+              <li><a href="https://support.safepal.com" target="_blank">Help Center</a></li>
+              <li><a href="https://t.me/SafePal_official" target="_blank">Community</a></li>
+              <li><a href="https://safepal.com/about" target="_blank">About Us</a></li>
+              <li><a href="https://safepal.com/careers" target="_blank">Careers</a></li>
+              <li><a href="https://safepal.com/contact" target="_blank">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2024 SafePal. All rights reserved. Backed by Binance Labs.</div>
+        <div class="footer-legal">
+          <a href="https://safepal.com/privacy" target="_blank">Privacy Policy</a>
+          <a href="https://safepal.com/terms" target="_blank">Terms of Service</a>
+          <a href="https://safepal.com/secure" target="_blank">Security</a>
+          <a href="https://safepal.com/cookie" target="_blank">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // ── HAMBURGER MENU ──────────────────────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // ── SCROLL REVEAL ───────────────────────────────────────────────
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+
+    // ── HERO PARTICLES ──────────────────────────────────────────────
+    const particleContainer = document.getElementById('particles');
+    function createParticle() {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const size = Math.random() * 4 + 2;
+      p.style.cssText = `
+        width: ${size}px;
+        height: ${size}px;
+        left: ${Math.random() * 100}%;
+        animation-duration: ${Math.random() * 15 + 10}s;
+        animation-delay: ${Math.random() * 10}s;
+        opacity: ${Math.random() * 0.6 + 0.2};
+      `;
+      particleContainer.appendChild(p);
+    }
+    for (let i = 0; i < 30; i++) createParticle();
+
+    // ── FAQ ACCORDION ───────────────────────────────────────────────
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      // Open clicked if it was closed
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // ── NAVBAR SCROLL EFFECT ────────────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.style.background = 'rgba(13, 11, 30, 0.98)';
+        navbar.style.boxShadow = '0 4px 24px rgba(0,0,0,0.4)';
+      } else {
+        navbar.style.background = 'rgba(13, 11, 30, 0.92)';
+        navbar.style.boxShadow = 'none';
+      }
+    });
+
+    // ── SMOOTH ANCHOR SCROLL ────────────────────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          closeMobile();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
