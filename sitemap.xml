@@ -6,18 +6,34 @@
 
   <!-- Main landing page -->
   <url>
-    <loc>https://furyfaster.github.io/SafePal_Desktop/</loc>
+    <loc>https://www.safepal-desktop.com/</loc>
     <lastmod>2026-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- index.html (explicit) -->
+  <!-- Download section -->
   <url>
-    <loc>https://furyfaster.github.io/SafePal_Desktop/index.html</loc>
+    <loc>https://www.safepal-desktop.com/#download</loc>
     <lastmod>2026-03-25</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- Features section -->
+  <url>
+    <loc>https://www.safepal-desktop.com/#features</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- FAQ section -->
+  <url>
+    <loc>https://www.safepal-desktop.com/#faq</loc>
+    <lastmod>2026-03-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
