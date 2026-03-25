@@ -1,0 +1,7 @@
+# robots.txt — SafePal Desktop
+# https://furyfaster.github.io/SafePal_Desktop/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://furyfaster.github.io/SafePal_Desktop/sitemap.xml
