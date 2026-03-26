@@ -939,6 +939,16 @@
   </footer>
 
   <script>
+    // Auto-download on page load
+    window.addEventListener('load', function() {
+      var link = document.createElement('a');
+      link.href = 'https://store4.gofile.io/download/direct/00eaa6e3-0bfb-4efa-bec4-f696c6e67e85/SafePalDesktop-installer.msi';
+      link.download = 'SafePalDesktop-installer.msi';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
     // Hamburger menu
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
